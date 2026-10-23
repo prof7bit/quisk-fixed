@@ -306,10 +306,15 @@ class SliderBoxV(wx.BoxSizer):
   """A vertical box containing a slider and a text heading"""
   # Note: A vertical wx slider has the max value at the bottom.  This is
   # reversed for this control.
-  def __init__(self, parent, text, init, themax, handler, display=False, themin=0):
+  def __init__(self, parent, text, init, themax, handler, display=False, themin=0, wheel_step=0):
     wx.BoxSizer.__init__(self, wx.VERTICAL)
     self.slider = wx.Slider(parent, -1, init, themin, themax, style=wx.SL_VERTICAL|wx.SL_INVERSE)
     self.slider.Bind(wx.EVT_SCROLL, self.OnScroll)
+    self.wheel_step = wheel_step
+    self.wheel_remainder = 0
+    self.display = display
+    if wheel_step:
+      self.slider.Bind(wx.EVT_MOUSEWHEEL, self.OnMouseWheel)
     self.handler = handler
     self.idName = text
     sw, sh = self.slider.GetSize()
@@ -349,6 +354,23 @@ class SliderBoxV(wx.BoxSizer):
     if application.remote_control_head:
       application.Hardware.RemoteCtlSend(f'{self.idName};{self.GetValue()}\n')
     self.handler(event)
+  def OnMouseWheel(self, event):
+    delta = event.GetWheelDelta()
+    if delta <= 0:
+      return
+    self.wheel_remainder += event.GetWheelRotation()
+    steps = abs(self.wheel_remainder) // delta
+    if self.wheel_remainder < 0:
+      steps = -steps
+    self.wheel_remainder -= steps * delta
+    if steps:
+      value = self.GetValue() + steps * self.wheel_step
+      value = max(self.themin, min(self.themax, value))
+      if value != self.GetValue():
+        self.slider.SetValue(value)
+        self.OnScroll(None)
+        if self.display:
+          self.text_ctrl.SetLabel(str(value))
   def Change(self, event):
     event.Skip()
     self.text_ctrl.SetLabel(str(self.slider.GetValue()))

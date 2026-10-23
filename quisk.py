@@ -3031,8 +3031,8 @@ class MultiRxGraph(GraphScreen):
     btn1.SetPosition((self.tabX, posY))
     btn2.SetPosition((self.tabX + half_width, posY))
     posY += multi_rx.rx_btn_height
-    self.sliderYs = SliderBoxV(self, 'Ys', self.y_scale, 160, self.OnChangeYscale, True)
-    self.sliderYz = SliderBoxV(self, 'Yz', self.y_zero, 160, self.OnChangeYzero, True)
+    self.sliderYs = SliderBoxV(self, 'Ys', self.y_scale, 160, self.OnChangeYscale, True, wheel_step=1)
+    self.sliderYz = SliderBoxV(self, 'Yz', self.y_zero, 160, self.OnChangeYzero, True, wheel_step=1)
     x = self.tabX + (half_width * 2 - self.sliderYs.width - self.sliderYz.width) // 2
     self.sliderYs.SetDimension(x, posY, self.sliderYs.width, 100)
     x += self.sliderYs.width
@@ -4897,10 +4897,10 @@ class App(wx.App):
     else:
       self.sliderSto = None
     # Make four sliders on the right
-    self.ritScale = SliderBoxV(frame, 'Rit', self.ritFreq, 2000, self.OnRitScale, False, themin=-2000)
-    self.sliderYs = SliderBoxV(frame, 'Ys', 0, 160, self.ChangeYscale, True)
-    self.sliderYz = SliderBoxV(frame, 'Yz', 0, 160, self.ChangeYzero, True)
-    self.sliderZo = SliderBoxV(frame, 'Zo', 0, 1000, self.OnChangeZoom)
+    self.ritScale = SliderBoxV(frame, 'Rit', self.ritFreq, 2000, self.OnRitScale, False, themin=-2000, wheel_step=1)
+    self.sliderYs = SliderBoxV(frame, 'Ys', 0, 160, self.ChangeYscale, True, wheel_step=1)
+    self.sliderYz = SliderBoxV(frame, 'Yz', 0, 160, self.ChangeYzero, True, wheel_step=1)
+    self.sliderZo = SliderBoxV(frame, 'Zo', 0, 1000, self.OnChangeZoom, wheel_step=1)
     self.sliderZo.SetValue(0)
     flag = wx.EXPAND
     # Add band buttons
