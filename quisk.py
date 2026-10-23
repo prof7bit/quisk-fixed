@@ -2892,15 +2892,22 @@ class WaterfallScreen(wx.SplitterWindow):
   def __init__(self, frame, width, data_width, graph_width):
     self.y_scale = conf.waterfall_y_scale
     self.y_zero = conf.waterfall_y_zero
+    self.waterfall_height_percent = max(1, min(99, int(conf.waterfall_height_percent)))
     self.zoom_control = 0
     wx.SplitterWindow.__init__(self, frame)
     self.SetSizeHints(width, -1)
-    self.SetSashGravity(0.50)
+    self.SetSashGravity(1.0 - self.waterfall_height_percent / 100.0)
     self.SetMinimumPaneSize(1)
     self.SetSize((width, conf.waterfall_graph_size + 100))	# be able to set sash size
     self.pane1 = GraphScreen(self, data_width, graph_width, 1)
     self.pane2 = WaterfallPane(self, data_width, graph_width)
     self.SplitHorizontally(self.pane1, self.pane2, conf.waterfall_graph_size)
+    self.Bind(wx.EVT_SIZE, self.OnSize)
+  def OnSize(self, event):
+    height = self.GetClientSize().height
+    if height > 1 and self.IsSplit():
+      self.SetSashPosition(height * (100 - self.waterfall_height_percent) // 100)
+    event.Skip()
   def SetDisplayMsg(self, text=''):
     self.pane1.SetDisplayMsg(text)
   def ScrollMsg(self, char):	# Add a character to a scrolling message

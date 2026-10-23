@@ -1716,6 +1716,8 @@ waterfall_scroll_mode = 1	# scroll faster at the top so that a new signal appear
 
 # Select the initial size in pixels (minimum 1) of the graph at the top of the waterfall.
 waterfall_graph_size = 80
+# Set the waterfall height as a percentage of the combined spectrum/waterfall area.
+waterfall_height_percent = 80
 
 # Quisk saves radio settings in a settings file.  The default directory is the same as the config
 # file, and the file name is quisk_settings.json.  You can set a different name here.  If you dual
