@@ -21,7 +21,6 @@ def wheel_step(rotation, delta, step):
   if remainder * 2 > abs(delta):
     whole_steps += 1
 
-  print (rotation, delta, step, direction * whole_steps * step)
   return direction * whole_steps * step
 
 
