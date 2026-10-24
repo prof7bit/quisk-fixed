@@ -6140,7 +6140,8 @@ class App(wx.App):
   def ChangeDisplayFrequency(self, tune, vfo, new_rxfreq=False):
     'Change the frequency displayed by Quisk'
     change = 0
-    if tune != self.txFreq or new_rxfreq:
+    # Without split, rxFreq may be stale even if txFreq did not change, e.g. when only the VFO moved.
+    if tune != self.txFreq or new_rxfreq or (not self.split_rxtx and self.rxFreq != tune):
       change = 1
       self.txFreq = tune
       if not self.split_rxtx:
