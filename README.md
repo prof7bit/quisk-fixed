@@ -12,6 +12,7 @@ Changes:
 - Fixed a second, dead filter marker that sometimes appeared when zooming and became the zoom center.
 - The waterfall tuning line is a thin solid line that scrolls cleanly, instead of an XOR line that came and went.
 - A frequency cursor follows the mouse in the waterfall and shows the frequency under the pointer.
+- Control + mouse wheel tunes faster; the new option `mouse_wheel_ctrl_factor` (default 10) sets the step multiplier.
 
 # Quisk Software Defined Radio
 
