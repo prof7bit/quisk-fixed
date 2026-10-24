@@ -1,3 +1,8 @@
+# About This Fork
+
+This fork adapts Quisk to my own needs, mainly using it as a panadapter for a Xiegu G90, and I'm very grateful to Jim Ahlstrom for this wonderful project.
+The changes were made with heavy use of AI, so I don't expect them to be merged upstream, but I'm sharing them in case anyone else wants to do something similar.
+
 # Quisk Software Defined Radio
 
 Quisk is a software defined radio transceiver that runs on a PC or on a single board computer such as a Raspberry Pi.
