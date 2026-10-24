@@ -9,6 +9,9 @@ Changes:
 - Zoom no longer wipes the waterfall; existing history is rescaled to the new zoom level.
 - The mouse wheel moves the Ys, Yz, Zo and Rit sliders in fine single steps.
 - New option `waterfall_height_percent` (default 80) sets the waterfall height in the spectrum/waterfall split.
+- Fixed a second, dead filter marker that sometimes appeared when zooming and became the zoom center.
+- The waterfall tuning line is a thin solid line that scrolls cleanly, instead of an XOR line that came and went.
+- A frequency cursor follows the mouse in the waterfall and shows the frequency under the pointer.
 
 # Quisk Software Defined Radio
 
