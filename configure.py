@@ -727,17 +727,6 @@ class Configuration:
         count -= 1
     return count
 
-class xxConfigHelp(wx.html.HtmlWindow):	# The "Help with Radios" first-level page
-  """Create the help screen for the configuration tabs."""
-  def __init__(self, parent):
-    wx.html.HtmlWindow.__init__(self, parent, -1, size=(win_width, 100))
-    if "gtk2" in wx.PlatformInfo:
-      self.SetStandardFonts()
-    self.SetFonts("", "", [10, 12, 14, 16, 18, 20, 22])
-    self.SetBackgroundColour(parent.bg_color)
-    # read in text from file help_conf.html in the directory of this module
-    self.LoadFile('help_conf.html')
-
 class QPowerMeterCalibration(wx.Frame):
   """Create a window to enter the power output and corresponding ADC value AIN1/2"""
   def __init__(self, parent, local_names):
@@ -2302,7 +2291,8 @@ class ControlMixin:
         if name in ('hot_key_ptt_toggle', 'hot_key_ptt_if_hidden', 'keyupDelay', 'cwTone', 'pulse_audio_verbose_output',
                     'start_cw_delay', 'start_ssb_delay', 'maximum_tx_secs', 'quisk_serial_cts', 'quisk_serial_dsr',
                     'hot_key_ptt1', 'hot_key_ptt2', 'midi_ptt_toggle', 'TxRxSilenceMsec',
-                    'fixed_tune_offset', 'calibrate_temp_20', 'calibrate_temp_40', 'calibrate_current_0', 'calibrate_current_1'):
+                    'fixed_tune_offset', 'calibrate_temp_20', 'calibrate_temp_40', 'calibrate_current_0', 'calibrate_current_1',
+                    'remote_radio_mic_jitter_ms'):
           setattr(conf, name, x)
           application.ImmediateChange(name)
         elif name[0:4] in ('lin_', 'win_'):

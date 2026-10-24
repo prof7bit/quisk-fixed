@@ -172,6 +172,22 @@ tx_level = {}
 # This is the maximum value of the slider.
 digital_tx_level = 100
 
+################ Receivers SuperPuper SDR, by UT3MK and US5NCJ 
+## hardware_file_name		Hardware file path, rfile
+# This is the file that contains the control logic for each radio.
+#hardware_file_name = 'ut3mkpkg/quisk_hardware.py'
+
+## widgets_file_name			Widget file path, rfile
+# This optional file adds additional controls for the radio.
+#widgets_file_name = ''
+
+## sdr1000_serial_port			Serial port, text
+# This is serial Port for the synthesizer, usually /dev/ttyUSBn on Linux or COMn on Win
+sdr1000_serial_port = "/dev/ttyUSB0"
+
+## sdr1000_serial_rate			Serial baud rate, integer
+# This is baud rate for the synthesizer.
+sdr1000_serial_rate = 57600
 
 
 ################ Receivers HiQSDR, The original N2ADR and HiQSDR radios.
@@ -425,7 +441,7 @@ hermes_PTT_hang_time = 4
 # This option only applies to the Hermes Lite 2. Set this to None if you don't have a tuner.
 # Set this to "Tune" to control the Icom AH-4 compatible ATU attached to the Hermes Lite 2 end plate.
 # Note that this option only applies to the HL2 end plate, not the IO board.
-# A tuner attached to the IO board is controlled from a button on the last line of the screen.
+# A tuner attached to the IO board is controlled from a button on the last line of the screen.
 # Then when the Spot button is pressed with a positive power, a tune request is sent to the ATU.
 # If the Spot button is pressed with a zero power level, the tuner is set to bypass mode.
 # Changes are immediate (no need to restart).
@@ -1507,6 +1523,19 @@ remote_radio_ip = ""
 # Enter a fairly long pass phrase of 20 or more characters.
 # It is only necessary to enter it once on each computer.
 remote_radio_password = ""
+
+## remote_radio_mic_jitter_ms         Mic buffer msec for remote radio, integer
+# This is set on the remote radio, not the control head.  The network can hold the control
+# head's microphone packets for 100 msec or more and then deliver them in a burst, which is
+# common over Wi-Fi.  The transmit audio then has gaps.  This buffers the microphone audio
+# for the given time before transmitting it, so the bursts are smoothed out, at the cost
+# of that much more transmit delay.  Zero turns the buffer off, which is best on a wired
+# network.  If needed, try 150 msec.  The maximum is 500.  A change takes effect when the
+# next control head connects.
+remote_radio_mic_jitter_ms = 0
+#remote_radio_mic_jitter_ms = 100
+#remote_radio_mic_jitter_ms = 150
+#remote_radio_mic_jitter_ms = 250
 
 ## k4_tcp_ip			IP address for K4 TCP, text
 # This is the Quisk IP address for the TCP server implementing K4 commands.
