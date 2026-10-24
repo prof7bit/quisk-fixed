@@ -2803,13 +2803,17 @@ class WaterfallDisplay(wx.Window):
     self.Bind(wx.EVT_LEFT_DOWN, parent.OnLeftDown)
     self.Bind(wx.EVT_RIGHT_DOWN, parent.OnRightDown)
     self.Bind(wx.EVT_LEFT_UP, parent.OnLeftUp)
-    self.Bind(wx.EVT_MOTION, parent.OnMotion)
+    self.Bind(wx.EVT_MOTION, self.OnMouseMotion)
+    self.Bind(wx.EVT_LEAVE_WINDOW, self.OnMouseLeave)
     self.Bind(wx.EVT_MOUSEWHEEL, parent.OnWheel)
     self.tune_tx = graph_width // 2	# Current X position of the Tx tuning line
     self.tune_rx = 0				# Current X position of Rx tuning line or zero
+    self.mouse_x = None				# Mouse position for the frequency cursor, or None
+    self.mouse_y = 0
     self.marginPen = wx.Pen(conf.color_graph, 1)
     self.wfallPenTx = wx.Pen('Black', 1)
     self.wfallPenRx = wx.Pen('Black', 1)
+    self.cursorPen = wx.Pen('White', 1)
     self.tuningPenTx = wx.Pen(conf.color_txline, 3)
     self.tuningPenRx = wx.Pen(conf.color_rxline, 3)
     self.filterBrush = wx.Brush(conf.color_bandwidth, wx.SOLID)
@@ -2857,6 +2861,27 @@ class WaterfallDisplay(wx.Window):
       dc.DrawLine(self.tune_rx, self.margin, self.tune_rx, self.height)
     dc.SetPen(self.wfallPenTx)
     dc.DrawLine(self.tune_tx, self.margin, self.tune_tx, self.height)
+    if self.mouse_x is not None:		# Frequency cursor following the mouse
+      dc.SetPen(self.cursorPen)
+      dc.DrawLine(self.mouse_x, self.margin, self.mouse_x, self.height)
+      freq = float(self.mouse_x - self.graph_width // 2) * sample_rate / self.data_width + self.zoom_deltaf + self.VFO
+      txt = FreqFormatter(int(freq + 0.5))
+      dc.SetFont(self.parent.font)
+      w, h = dc.GetTextExtent(txt)
+      x = self.mouse_x - w - 6		# Left of the line; the mouse pointer covers the right side
+      if x < 0:
+        x = self.mouse_x + 16
+      dc.SetTextForeground('White')
+      dc.SetTextBackground('Black')
+      dc.SetBackgroundMode(wx.SOLID)
+      dc.DrawText(txt, x, self.mouse_y - h // 2)
+  def OnMouseMotion(self, event):
+    self.mouse_x, self.mouse_y = event.GetPosition()
+    self.Refresh(False)
+    self.parent.OnMotion(event)
+  def OnMouseLeave(self, event):
+    self.mouse_x = None
+    self.Refresh(False)
   def SetHeight(self, height):
     self.height = height
     self.SetSize((self.graph_width, height))
