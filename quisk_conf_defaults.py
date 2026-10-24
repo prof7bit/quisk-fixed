@@ -2681,3 +2681,4 @@ mouse_tune_method = 0	# The Quisk tune frequency changes and the VFO frequency i
 #mouse_tune_method = 1	# The Quisk tune frequency is unchanged and the VFO changes.
 # configurable mouse wheel thanks to DG7MGY
 mouse_wheelmod = 50		# Round frequency when using mouse wheel (50 Hz)
+mouse_wheel_ctrl_factor = 10	# With the Control key pressed, the mouse wheel step is this many times larger

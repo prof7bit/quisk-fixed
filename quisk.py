@@ -2572,6 +2572,8 @@ class GraphScreen(wx.Window):
       wm = conf.freq_spacing
     else:
       wm = self.WheelMod		# Round frequency when using mouse wheel
+    if event.ControlDown():		# Tune faster with the Control key
+      wm *= conf.mouse_wheel_ctrl_factor
     mouse_x, mouse_y = self.GetMousePosition(event)
     x = mouse_x - self.originX
     if self.split_unavailable:
