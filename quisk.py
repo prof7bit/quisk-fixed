@@ -2808,7 +2808,8 @@ class WaterfallDisplay(wx.Window):
     self.tune_tx = graph_width // 2	# Current X position of the Tx tuning line
     self.tune_rx = 0				# Current X position of Rx tuning line or zero
     self.marginPen = wx.Pen(conf.color_graph, 1)
-    self.tuningPen = wx.Pen('White', 3)
+    self.wfallPenTx = wx.Pen('Black', 1)
+    self.wfallPenRx = wx.Pen('Black', 1)
     self.tuningPenTx = wx.Pen(conf.color_txline, 3)
     self.tuningPenRx = wx.Pen(conf.color_rxline, 3)
     self.filterBrush = wx.Brush(conf.color_bandwidth, wx.SOLID)
@@ -2851,11 +2852,11 @@ class WaterfallDisplay(wx.Window):
     else:
       bmap = wx.Bitmap.FromBuffer(width, height, self.pixels)
     dc.DrawBitmap(bmap, 0, self.margin)
-    dc.SetPen(self.tuningPen)
-    dc.SetLogicalFunction(wx.XOR)
-    dc.DrawLine(self.tune_tx, self.margin, self.tune_tx, self.height)
     if self.tune_rx:
+      dc.SetPen(self.wfallPenRx)
       dc.DrawLine(self.tune_rx, self.margin, self.tune_rx, self.height)
+    dc.SetPen(self.wfallPenTx)
+    dc.DrawLine(self.tune_tx, self.margin, self.tune_tx, self.height)
   def SetHeight(self, height):
     self.height = height
     self.SetSize((self.graph_width, height))
@@ -2891,17 +2892,10 @@ class WaterfallDisplay(wx.Window):
     QS.watfall_OnGraphData(self.rgb_data, data, y_zero, y_scale, gain, x_origin, self.zoom)
     self.Refresh(False)
   def SetTuningLine(self, tune_tx, tune_rx):
-    dc = wx.ClientDC(self)
-    rit = self.DrawFilter(dc)
-    dc.SetPen(self.tuningPen)
-    dc.SetLogicalFunction(wx.XOR)
-    dc.DrawLine(self.tune_tx, self.margin, self.tune_tx, self.height)
-    if self.tune_rx:
-      dc.DrawLine(self.tune_rx, self.margin, self.tune_rx, self.height)
-      dc.DrawLine(tune_rx, self.margin, tune_rx, self.height)
-    dc.DrawLine(tune_tx, self.margin, tune_tx, self.height)
+    # OnPaint draws the filter and tuning lines; drawing outside of it is unreliable with GTK3.
     self.tune_tx = tune_tx
     self.tune_rx = tune_rx
+    self.Refresh(False)
   def ChangeZoom(self, zoom, deltaf, zoom_control):
     self.zoom = zoom
     self.zoom_deltaf = deltaf
